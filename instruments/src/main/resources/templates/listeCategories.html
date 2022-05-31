@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="template">
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Listes Categories</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+	<div class="container mt-5">
+		<div class="card">
+			<div class="card-header">Listes Categories</div>
+			<div class="card-body">
+				<table class="table table-striped">
+					<tr>
+						<th>ID</th>
+						<th>Categories</th>
+						<th>Description</th>
+
+					</tr>
+					<tr th:each="g:${categories.content}">
+						<td th:text="${g.idCat}"></td>
+						<td th:text="${g.nomCat}"></td>
+						<td th:text="${g.descriptionCat}"></td>
+						
+						<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" onclick="return confirm('Are you sure ?')"
+							th:href="@{supprimerCategorie(id=${g.idCat},page=${currentPage},size=${size})}">
+							Supprimer</a></td>
+							
+						<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-success"
+						th:href="@{modifierCategorie(id=${g.idCat})}">Modify</a></td>
+					</tr>
+
+
+
+				</table>
+				<ul class="nav nav-pills">
+					<li th:each="page,status:${pages}"><a
+						th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+						th:href="@{ ListeCategories(page=${status.index}, size=${size} ) }"
+						th:text="${status.index }"></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
